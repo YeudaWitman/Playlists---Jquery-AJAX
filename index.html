@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playlists And Music</title>
+    <!--JQuery 3.3.1-->
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <!--Bootstrap 4.1.0-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+    <!--Font Awesome-->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous"></script>
+    <!--GOOGLE FONTS-->
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <!-- w3schools -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <!-- arc text -->
+    <script src="js\jquery.arctext.js"></script>
+    <!--CSS FILE-->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/playlistFormStyle.css">
+    <!--Covers: https://www.billboard.com/photos/6663070/edm-love-songs-top-50 -->
+</head>
+<body>
+    <div class="container">
+        <!-- nav bar -->
+        <nav class="navbar navbar-light bg-light sticky-top">
+            <button class="btn btn-outline-success my-2 my-sm-0" data-toggle="modal" data-target="#playlistModal"><i class="fas fa-plus"></i></button>  Add New Playlist
+            <form class="form-inline">
+                <input class="form-control mr-sm-2" id="searchByName" type="search" placeholder="Search playlist" aria-label="Search">
+                <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button> -->
+            </form>
+        </nav>
+
+        <!-- Playlists Container -->
+        <div class="row" id="playlistsContainer">
+
+        </div>
+
+        <!-- Modal Add Playlist -->
+        <div class="modal fade" id="playlistModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form id="formplaylist">
+                        <div id="addPlaylistStepOne">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Add new playlist</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <img src="#" class="rounded float-right playlistCoverImg" alt="please add cover image">
+                                    <label>Playlist Name:
+                                    <input type="text" id="PlaylistNameInput" class="form-control" placeholder="e.g. Lorem Ipsum"></label>
+                                    <label>Image URL:
+                                    <input type="text" id="PlaylistURLInput" class="form-control" placeholder="http://..."></label>
+                                    <span id="PlaylistHelp" class="form-text text-danger"></span>
+                                </div>
+                            </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                                <button type="reset" class="btn btn-outline-primary">Reset Fields</button>
+                                <button id="playlistFormNextBtn" type="button" class="btn btn-outline-success">Next</button>
+                            </div>
+                        </div>
+                        <div id="addPlaylistStepTwo">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Add Playlist Songs</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <div class="form-group" id="formInputs">
+                                        <div class="form-row"><span class="col-7">Song URL:</span><span class="col">Song Name:</span></div>
+                                        <div class="form-row">
+                                            <input type="text" name="url" class="songInput form-control col-7" placeholder="Song.mp3" value="url1">
+                                            <input type="text" name="name" class="songInput form-control col" placeholder="Name" value="name1">
+                                            <button id="addRowBtn" type="button" class="btn btn-outline-primary" disabled><i class="fas fa-ban"></i></button>
+                                        </div>
+                                    </div>
+                                    <span id="PlaylistHelp" class="form-text text-danger"></span>
+                                </div>
+                            </div>
+                                <div class="modal-footer">
+                                <button id="addRowBtn" type="button" class="btn btn-outline-primary"><i class="fas fa-plus"></i></button>
+                                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                                <button id="playlistFormBackBtn" type="button" class="btn btn-outline-primary">Back</button>
+                                <button id="playlistFormSaveBtn" type="submit" class="btn btn-outline-success" data-dismiss="modal">Save &amp; Finish</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Modal remove playlist confirmation -->
+        <div class="modal fade" id="playlistModalRemove" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                        <div id="addPlaylistStepOne">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Delete Playlist</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="alert alert-danger" role="alert">
+                                    <h4>Are you sure you want to delete the playlist<span id="playlistNameDelete"></span>?</h4>
+                                    <div>You can't undo this action!</div>
+                                </div>
+                            </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-success" data-dismiss="modal">No!! keep the playlist</button>
+                                <button id="playlistDeleteConfirm" data-id="" type="button" class="btn btn-outline-danger" data-dismiss="modal">Delete</button>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/main.js"></script>
+</body>
+</html>

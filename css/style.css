@@ -1,0 +1,141 @@
+body {
+    /*font-family: 'Raleway', sans-serif;*/
+    font-family: 'Nunito', sans-serif;
+    box-sizing: border-box;
+}
+
+.player {
+    margin: 15px auto;
+    width: 500px;
+    height: 220px;
+    border-radius: 110px;
+    border: 2px solid #000;
+    background-color: #28a745;
+}
+
+.playerController {
+    width: 200px;
+    padding: 20px 0;
+    float: right;
+}
+
+#playerPlayButton {
+    position: absolute;
+    margin: 72px;
+    text-align: center;
+    font-size: 3em;
+    color: #28a745;
+    transition: all 0.7s ease-in-out;
+    z-index: 4;
+}
+
+#playerPlayButton:hover {
+    color: #fff;
+}
+
+#playerAlbumCoverContainer {
+    margin: 9px;
+    width: 200px;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    -webkit-transition: all 1s ease-in-out;
+    transition: all 1s ease-in-out;
+}
+
+#playerAlbumCover {
+    position: absolute;
+    margin: 4px;
+    width: 190px;
+    height: 190px;
+    border-radius: 50%;
+}
+
+#playerAlbumCoverContainer:hover {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 1), inset 0 0 20px #888;
+
+}
+
+audio {
+    box-sizing: content-box;
+    background-color: #555;
+    width: 100%;
+    border: 3px solid #000;
+}
+
+/*----*/
+.albumCoverContainer {
+    width: 230px;
+    height: 230px;
+    /* border: 3px solid #000; */
+}
+.albumCover {
+    width: 200px;
+    height: 200px;
+    margin: auto;
+    border-radius: 50%;
+    opacity: 0.8;
+    border: 3px solid #FFF;
+    background-color: black;
+    background-size: 200px 200px;
+    -webkit-transition: all 0.7s ease-in-out;
+    transition: all 0.7s ease-in-out;
+}
+
+.albumCover:hover {
+    opacity: 1;
+    box-shadow: 0 0 15px #28a745;
+}
+
+.albumCover:hover .buttonsContainer {
+    visibility: visible;
+}
+
+.buttonsContainer {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin: 21px auto;
+    padding: 10px;
+    visibility: hidden;
+    font-size: 1.2em;
+    text-align: center;
+    color: #28a745;
+    box-shadow: 0 0 5px #fff;
+}
+
+.playlistCoverImg {
+    width: 170px;
+    height: 170px;
+}
+.albumCoverTitle {
+    text-align: center;
+    /* color: #FFF; */
+    margin: auto;
+}
+
+.playButton {
+    font-size: 2.4em;
+    margin-top: 12px;
+    -webkit-transition: all 0.7s ease-in-out;
+    transition: all 0.7s ease-in-out;
+}
+
+.playButton:hover {
+    color: #FFF;
+}
+
+.buttonTop>.fa-times-circle:hover {
+    color: #dc3545;
+}
+
+.buttonTop>.fa-pencil-alt:hover {
+    color: #007bff;
+}
+/* Modal */
+#addPlaylistStepOne {
+    display: block;
+}
+
+#addPlaylistStepTwo {
+    display: none;
+}
