@@ -15,6 +15,8 @@ $(document).ready(function () {
     //Add playlist event
     $(document).on('click', '#openAddPlaylist', function() {
         $('#playlistModal').modal('show');
+        $('#playlistFormSaveBtn').show();
+        $('#playlistFormEditSaveBtn').hide();
         $('#formInputs').html('');
         $('#playlistFormSaveBtn').attr('id', 'playlistFormSaveBtn');
         appendSongRow(1, 1, 1);
@@ -35,12 +37,14 @@ $(document).ready(function () {
 
     //Edit playlist event
     $(document).on('click', '.edit', function() {
+        $('#playlistFormSaveBtn').hide();
+        $('#playlistFormEditSaveBtn').show();
         id = $(this).attr('data-id');
         serviceData.searchById(id, service.editPlaylist)
         //set unique id to form
         $('#formplaylist').attr('data-id', id);
         $('#playlistModal').modal('show');
-        $('#playlistFormSaveBtn').attr('id', 'playlistFormEditSaveBtn');
+        
     });
 
     //add/save playlist
@@ -130,7 +134,7 @@ $(document).ready(function () {
 
         this.removePlaylist = function(id) {
             $('#playlistNo'+id).remove();
-            //TODO: add dataservice
+            serviceData.deleteData(id, serviceData.getData)
         }
 
         this.editPlaylist = function(playlist) {
@@ -153,25 +157,25 @@ $(document).ready(function () {
         }
 
         this.saveEditedPlaylist = function(id) {
-            let songsNamesList = $('#formplaylist [name="name"]').serializeArray();
-            let songsURLsList = $('#formplaylist [name="url"]').serializeArray();
-            let SongsObjArray = [];
-            $.each(songsNamesList, function(index, value) {
-                var songsObj = {name : "", url: ""};
-                songsObj.name = value['value'];
-                songsObj.url = getValueByIndex(index);
-                SongsObjArray.push(songsObj);
+            let editSongsNamesList = $('#formplaylist [name="name"]').serializeArray();
+            let editURLsList = $('#formplaylist [name="url"]').serializeArray();
+            let editSongsObjArray = [];
+            $.each(editSongsNamesList, function(index, value) {
+                var editSongsObj = {name : "", url: ""};
+                editSongsObj.name = value['value'];
+                editSongsObj.url = getValueByIndex(index);
+                editSongsObjArray.push(editSongsObj);
             });
               
-            let p = {"name": $("#PlaylistNameInput").val(), "image": $("#PlaylistURLInput").val()}
-            let s = {"songs": SongsObjArray}
-            console.log(p);
+            let pe = {"name": $("#PlaylistNameInput").val(), "image": $("#PlaylistURLInput").val()}
+            let s = {"songs": editSongsObjArray}
+            console.log(pe);
             console.log(id);
-            serviceData.updateData(id, p)
+            serviceData.updateData(id, pe)
             serviceData.UpdatePlaylistSongs(id, s)
             //helper to get equal id
             function getValueByIndex(index) {
-                return songsURLsList[index].value;
+                return editURLsList[index].value;
             }
         }
         
@@ -185,9 +189,9 @@ $(document).ready(function () {
                 songsObj.url = getValueByIndex(index);
                 SongsObjArray.push(songsObj);
             });
-              
-            var p = new Playlist($("#PlaylistNameInput").val(), $("#PlaylistURLInput").val(), SongsObjArray); 
-            //serviceData.postData(p)
+              console.log('adding');
+            let p = new Playlist($("#PlaylistNameInput").val(), $("#PlaylistURLInput").val(), SongsObjArray); 
+            serviceData.postData(p, serviceData.getData)
             //helper to get equal id
             function getValueByIndex(index) {
                 return songsURLsList[index].value;
@@ -199,6 +203,7 @@ $(document).ready(function () {
         //var service = new playlistService;
 
         this.getData = function() {
+            console.log('load');
             //Get all playlists
             $.ajax( {
                 method:'GET', 
@@ -207,8 +212,10 @@ $(document).ready(function () {
                 success:function (data) {
                     service.renderPlaylist(data.data);
                     playlistsRenderArr = data.data;
+                    console.log(data);
                 }
-            }); 
+            });
+            
         }
     
         this.searchById = function (id, callBack) {
@@ -239,7 +246,7 @@ $(document).ready(function () {
             }); 
         }
 
-        this.postData = function(dataObj){
+        this.postData = function(dataObj, callBack){
             //Create new playlists
             $.ajax({
                 type: "POST",
@@ -247,7 +254,7 @@ $(document).ready(function () {
                 dataType: 'json',
                 data: dataObj,
                 success: function() {
-                    serviceData.getData();
+                    callBack();
                 }, 
             })
         }
@@ -275,6 +282,18 @@ $(document).ready(function () {
                 data: dataObj,
                 success: function() {
                     serviceData.getData();
+                }, 
+            })
+        }
+
+        this.deleteData = function(id, callBack){
+            //Update playlist songs
+            $.ajax({
+                type: "DELETE",
+                url: 'api/playlist/'+id,
+                dataType: 'json',
+                success: function() {
+                    callBack();
                 }, 
             })
         }
