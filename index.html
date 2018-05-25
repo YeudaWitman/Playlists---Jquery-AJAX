@@ -21,14 +21,13 @@
     <script src="js\jquery.arctext.js"></script>
     <!--CSS FILE-->
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/playlistFormStyle.css">
     <!--Covers: https://www.billboard.com/photos/6663070/edm-love-songs-top-50 -->
 </head>
 <body>
     <div class="container">
         <!-- nav bar -->
         <nav class="navbar navbar-light bg-light sticky-top">
-            <span><button class="btn btn-outline-success my-2 my-sm-0" id="openAddPlaylist" data-toggle="modal" data-target="#playlistModal">
+            <span><button class="btn btn-outline-success my-2 my-sm-0" id="openAddPlaylist" ><!--data-toggle="modal" data-target="#playlistModal"-->
                 <i class="fas fa-plus"></i></button>  Add New Playlist</span>
             <form class="form-inline">
                 <input class="form-control mr-sm-2" id="searchByName" type="search" placeholder="Search playlist" aria-label="Search">
@@ -71,7 +70,7 @@
                         </div>
                         <div id="addPlaylistStepTwo">
                             <div class="modal-header">
-                                <span class="modal-title"><h5>Add Playlist Songs</h5> (Min 1 song, Max 12 songs)</span>
+                                <span class="modal-title"><h5>Add Playlist Songs</h5> (Min 1 song, up to 12 songs)</span>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                                 </button>
@@ -88,7 +87,8 @@
                                 <button id="addRowBtn" type="button" class="btn btn-outline-primary"><i class="fas fa-plus"></i></button>
                                 <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
                                 <button id="playlistFormBackBtn" type="button" class="btn btn-outline-primary">Back</button>
-                                <button id="playlistFormSaveBtn" type="submit" class="btn btn-outline-success" data-dismiss="modal">Save &amp; Finish</button>
+                                <button id="playlistFormSaveBtn" type="button" class="btn btn-outline-success" data-dismiss="modal">Save &amp; Finish</button>
+                                <button id="playlistFormEditSaveBtn" type="button" class="btn btn-outline-success" data-dismiss="modal">Save &amp; Finish</button>
                             </div>
                         </div>
                     </form>
