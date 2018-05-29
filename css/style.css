@@ -3,9 +3,13 @@ body {
     font-family: 'Nunito', sans-serif;
     box-sizing: border-box;
 }
-
-.player {
+/*Music Player*/
+#playerContainer {
     margin: 15px auto;
+    width: 550px;
+}
+.player {
+    margin: auto;
     width: 500px;
     height: 220px;
     border-radius: 110px;
@@ -15,11 +19,10 @@ body {
 
 .playerController {
     width: 200px;
-    padding: 20px 0;
-    float: right;
+    margin-left: 210px;
 }
 
-#playerPlayButton {
+#playerPlayButton, #playerPauseButton {
     position: absolute;
     margin: 72px;
     text-align: center;
@@ -29,7 +32,7 @@ body {
     z-index: 4;
 }
 
-#playerPlayButton:hover {
+#playerPlayButton, #playerPauseButton:hover {
     color: #fff;
 }
 
@@ -55,6 +58,15 @@ body {
 
 }
 
+li.songInList  {
+    opacity: 0.5;
+    margin: -2px;
+    list-style-type: decimal;
+}
+li.songInList:hover {
+    opacity: 1;
+}
+
 audio {
     box-sizing: content-box;
     background-color: #555;
@@ -62,7 +74,22 @@ audio {
     border: 3px solid #000;
 }
 
-/*----*/
+#sideButtonsContainer{
+    margin-top: 50px;
+    font-size: 1.8em;
+}
+#sideButtonsContainer>.delete:hover {
+    color: #dc3545;
+}
+
+#sideButtonsContainer>.edit:hover {
+    color: #007bff;
+}
+#closePlayer:hover {
+    color: #dc3545;
+}
+
+/*Playlist Covers*/
 .albumCoverContainer {
     margin: 25px;
     width: 230px;
@@ -125,7 +152,7 @@ audio {
     color: #FFF;
 }
 
-.buttonTop>.fa-times-circle:hover {
+.buttonTop>.fa-trash:hover {
     color: #dc3545;
 }
 
