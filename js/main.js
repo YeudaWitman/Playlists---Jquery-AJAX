@@ -1,5 +1,5 @@
 $(document).ready(function () {
-
+    $('#playerContainer').hide();
     //HELPERS
     //change the page title
     document.title = "This is the new page title.";
@@ -11,6 +11,8 @@ $(document).ready(function () {
 
     //events
     var service = new playlistService;
+    var modalCtrl = new ModalControl;
+    var musicPlayer = new PlayerControl;
 
     //Add playlist event
     $(document).on('click', '#openAddPlaylist', function() {
@@ -19,19 +21,20 @@ $(document).ready(function () {
         $('#playlistFormEditSaveBtn').hide();
         $('#formInputs').html('');
         $('#playlistFormSaveBtn').attr('id', 'playlistFormSaveBtn');
-        appendSongRow(1, 1, 1);
+        modalCtrl.appendSongRow(1, 1, 1);
     });
     //Delete playlist confirm
     $(document).on('click', '.delete', function() {
         id = $(this).attr('data-id');
+        let delTitle = $(this).attr('data-title');
+        $('#modalDelTitle').text('Delete '+delTitle);
         $('#playlistModalRemove').modal('show');
         $('#playlistDeleteConfirm').attr('data-id', id);
     });
     //Delete playlist
     $(document).on('click', '#playlistDeleteConfirm', function() {
         id = $(this).attr('data-id');
-        console.log(id);
-        service.removePlaylist(id);
+        //service.removePlaylist(id);
         //$('#playlistModalRemove').modal('hide');
     });
 
@@ -44,28 +47,27 @@ $(document).ready(function () {
         //set unique id to form
         $('#formplaylist').attr('data-id', id);
         $('#playlistModal').modal('show');
-        
     });
 
-    //add/save playlist
-    $("#playlistFormSaveBtn").click(service.addPlaylist);
+    //add playlist
+    $(document).on('click', '#playlistFormSaveBtn',service.addPlaylist);
     //save playlist after edit
     $(document).on('click', '#playlistFormEditSaveBtn', function() {
         //get unique id
         let dataId = $(this).closest("#formplaylist").attr('data-id');
         service.saveEditedPlaylist(dataId);
+        $("#formplaylist")['0'].reset();
+        modalCtrl.toggleMuletiStep();
     });
 
     //Modal multistep control
-    $('#playlistFormNextBtn, #playlistFormBackBtn').click(function() {
-        $("#addPlaylistStepOne, #addPlaylistStepTwo").toggle();
-    });
+    $('#playlistFormNextBtn, #playlistFormBackBtn').click(modalCtrl.toggleMuletiStep);
 
     //Add rows to 'add songs' form
     $(document).on('click', '#addRowBtn', function() {
         if(numberOfRows < max_fields){
             numberOfRows++;
-            appendSongRow(numberOfRows, numberOfRows, numberOfRows)
+            modalCtrl.appendSongRow(numberOfRows, numberOfRows, numberOfRows)
         } else {
             console.log('full');
         }
@@ -74,20 +76,98 @@ $(document).ready(function () {
     //remove rows from 'add songs' form
     $(document).on('click', '.removeRowBtn', function() {
         if(numberOfRows > min_fields){
-        $(this).parent().remove();
-        numberOfRows--;
+            $(this).parent().remove();
+            numberOfRows--;
         } else {
             console.log('end');
         }
     });
 
-    function appendSongRow(id, valueUrl, valueName) {
-        $('#formInputs').append(`
-        <div class="form-row">
-            <input type="text" name="url" data-id="${id}" class="songInput form-control col-7" placeholder="Song.mp3" value="${valueUrl}">
-            <input type="text" name="name" data-id="${id}" class="songInput form-control col" placeholder="Name" value="${valueName}">
-            <button type="button" class="btn btn-outline-primary removeRowBtn"><i class="fas fa-minus"></i></button>
-        </div>`);
+    //Play music
+    $(document).on('click', '.play', musicPlayer.startPlay);
+    $(document).on('click', '.songInList', musicPlayer.initPlay);
+    $(document).on('click', '#playerPlayButton', musicPlayer.playSong);
+    $(document).on('click', '#playerPauseButton', musicPlayer.initPause);
+    $(document).on('click', '#closePlayer',musicPlayer.closePlayer);
+
+    function PlayerControl() {
+        this.startPlay = function() {
+            $('#playerContainer').show();
+            id = $(this).attr('data-id');
+            let playTitle = $(this).attr('data-title');
+            $('#songListsTitle').html('<strong>Now playing: '+playTitle+'</strong>');
+            serviceData.GetPlaylistSongs(id, musicPlayer.appendSongList);
+            $('#sideButtonsContainer>.delete').attr('data-id', id);
+            $('#sideButtonsContainer>.edit').attr('data-id', id);
+        }
+        this.initPlay = function() {
+            songUrl = $(this).attr('song-url');
+            console.log(songUrl)
+            $('#audioTag').attr('src', songUrl);
+            musicPlayer.playSong();
+        }
+
+        this.initPause = function() {
+            $('#playerPauseButton').attr('id', 'playerPlayButton');
+            musicPlayer.pauseAudio();
+        }
+
+        this.buttonIcon = function() {
+            if ($("#centerButton").hasClass("fa-pause")) {
+                $("#centerButton").removeClass("fa-pause");
+                $("#centerButton").addClass("fa-play");
+            } 
+            else {
+                $("#centerButton").removeClass("fa-play");
+                $("#centerButton").addClass("fa-pause");
+            }  
+        }
+
+        this.renderPlayer = function() {
+            $("#musicPlayer").show;
+        }
+
+        this.appendSongList = function(songsList) {
+            $('#playerSongList').html('');
+            $.each(songsList['0'].songs, function(i, song) {
+                $('#playerSongList').append(`
+                    <li class="songInList" song-url="${song.url}">${song.name}</li>
+                `)
+            })
+        }
+
+        this.playSong = function() {
+            musicPlayer.buttonIcon();
+            $('#playerPlayButton').attr('id', 'playerPauseButton');
+            $("#playerAlbumCover").toggleClass("w3-spin");
+            $('#audioTag').trigger('play');
+        }
+
+        this.pauseAudio = function(){
+            musicPlayer.buttonIcon();
+            $("#playerAlbumCover").toggleClass("w3-spin");
+            $('#audioTag').trigger('pause');
+        }
+
+        this.closePlayer = function() {
+            $('#playerContainer').hide();
+        }
+    }
+
+    function ModalControl() {
+        this.appendSongRow = function (id, valueUrl, valueName) {
+            $('#formInputs').append(`
+            <div class="form-row">
+                <input type="text" name="url" data-id="${id}" class="songInput form-control col-7" placeholder="Song.mp3" value="${valueUrl}">
+                <input type="text" name="name" data-id="${id}" class="songInput form-control col" placeholder="Name" value="${valueName}">
+                <button type="button" class="btn btn-outline-primary removeRowBtn"><i class="fas fa-minus"></i></button>
+            </div>`);
+        }
+
+        this.toggleMuletiStep = function() {
+            $("#addPlaylistStepOne, #addPlaylistStepTwo").toggle();
+        }
+
     }
 
     //Search by name
@@ -109,21 +189,20 @@ $(document).ready(function () {
         }
     }); 
 
-    
-
     function playlistService() {
         this.renderPlaylist = function(playlistArray) {
             resultContainer.html('');
             $.each(playlistArray, function (i, playlist) {
                 let pID = playlist.id;
+                let pTitle = playlist.name;
                 let playlistElement = `
                     <div class="albumCoverContainer" id="playlistNo${pID}">
-                        <div class="albumCoverTitle">${playlist.name}</div>
+                        <div class="albumCoverTitle">${pTitle}</div>
                         <div class="albumCover" data-id="${pID}">
                             <div class="buttonsContainer">
-                                <span class="buttonTop delete" data-id="${pID}"><i class="fas fa-times-circle"></i></span>
-                                <span class="buttonTop edit" data-id="${pID}"><i class="fas fa-pencil-alt"></i></span>
-                                <div class="playButton play" data-id="${pID}"><i class="fas fa-play-circle"></i></div>
+                                <span class="buttonTop delete" data-id="${pID}" data-title="${pTitle}"><i class="fas fa-trash"></i></span>
+                                <span class="buttonTop edit" data-id="${pID}" data-title="${pTitle}"><i class="fas fa-pencil-alt"></i></span>
+                                <div class="playButton play" data-id="${pID}" data-title="${pTitle}"><i class="fas fa-play-circle"></i></div>
                             </div>
                         </div>
                     </div>`;
@@ -138,8 +217,6 @@ $(document).ready(function () {
         }
 
         this.editPlaylist = function(playlist) {
-            console.log('edit');
-            console.log(playlist['0']);
             $("#modalTitle").text('Edit: '+playlist['0'].name)
             $("#PlaylistNameInput").val(playlist['0'].name)
             $("#PlaylistURLInput").val(playlist['0'].image)
@@ -152,7 +229,7 @@ $(document).ready(function () {
             numberOfRows = $(songsArray).length;
             $('#formInputs').html('');
             $.each(songsArray, function (i, song) {
-                appendSongRow(i, song.url, song.name);
+                modalCtrl.appendSongRow(i, song.url, song.name);
             });
         }
 
@@ -169,8 +246,6 @@ $(document).ready(function () {
               
             let pe = {"name": $("#PlaylistNameInput").val(), "image": $("#PlaylistURLInput").val()}
             let s = {"songs": editSongsObjArray}
-            console.log(pe);
-            console.log(id);
             serviceData.updateData(id, pe)
             serviceData.UpdatePlaylistSongs(id, s)
             //helper to get equal id
@@ -189,13 +264,14 @@ $(document).ready(function () {
                 songsObj.url = getValueByIndex(index);
                 SongsObjArray.push(songsObj);
             });
-              console.log('adding');
             let p = new Playlist($("#PlaylistNameInput").val(), $("#PlaylistURLInput").val(), SongsObjArray); 
             serviceData.postData(p, serviceData.getData)
             //helper to get equal id
             function getValueByIndex(index) {
                 return songsURLsList[index].value;
             }
+            $("#formplaylist")['0'].reset();
+            toggleMuletiStep();
         }
     }
 
@@ -203,7 +279,6 @@ $(document).ready(function () {
         //var service = new playlistService;
 
         this.getData = function() {
-            console.log('load');
             //Get all playlists
             $.ajax( {
                 method:'GET', 
@@ -212,10 +287,8 @@ $(document).ready(function () {
                 success:function (data) {
                     service.renderPlaylist(data.data);
                     playlistsRenderArr = data.data;
-                    console.log(data);
                 }
             });
-            
         }
     
         this.searchById = function (id, callBack) {
@@ -232,6 +305,7 @@ $(document).ready(function () {
                 }
             }); 
         }
+
         this.GetPlaylistSongs = function (id, callBack) {
             //Get playlist songs
             $.ajax( {
@@ -308,9 +382,8 @@ $(document).ready(function () {
         this.image = image;
         this.songs = songs;
     }
-
-    function PlaylistEdit(name, image) {
-        this.name = name;
-        this.image = image;
+    function emptyCallback(data) {
+        console.log(data['0']);
+        return data['0'];
     }
 });
