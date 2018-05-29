@@ -34,7 +34,27 @@
                 <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button> -->
             </form>
         </nav>
-
+        <!-- music player -->
+        <div class="row sticky-top" id="playerContainer">
+            <div class="player" id="musicPlayer">
+                <div id="playerAlbumCoverContainer">
+                    <div id="playerPlayButton" class="playButton"><i id="centerButton" class="fas fa-play"></i></div>
+                    <img id="playerAlbumCover" src="https://www.billboard.com/files/styles/900_wide/public/media/best-edm-songs-50-axwell-center-of-the-universe-billboard-600x600.jpg" alt="Album Cover">
+                </div>
+                <div class="playerController">
+                    <audio id="audioTag" controls src="">
+                        <source id="audioFile" src="" type="audio/mpeg">
+                    </audio>
+                    <div id="songListsTitle"></div>
+                    <div id="playerSongList"></div>
+                </div>
+            </div>
+            <div id="sideButtonsContainer">
+                <div id="closePlayer" name="Close Player"><i class="fas fa-times"></i></div>
+                <div class="delete" data-id=""><i class="fas fa-trash"></i></div>
+                <div class="edit" data-id="}"><i class="fas fa-pencil-alt"></i></div>
+            </div>
+        </div>
         <!-- Playlists Container -->
         <div class="row" id="playlistsContainer">
 
@@ -101,7 +121,7 @@
                 <div class="modal-content">
                         <div id="addPlaylistStepOne">
                             <div class="modal-header">
-                                <h5 class="modal-title">Delete Playlist</h5>
+                                <h5 class="modal-title" id="modalDelTitle">Delete Playlist</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                                 </button>
