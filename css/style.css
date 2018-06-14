@@ -36,6 +36,10 @@ body {
     color: #fff;
 }
 
+.playButtonErr {
+    color: #dc3545;
+}
+
 #playerAlbumCoverContainer {
     margin: 9px;
     width: 200px;
@@ -51,6 +55,7 @@ body {
     width: 190px;
     height: 190px;
     border-radius: 50%;
+    background-size: 190px 190px;
 }
 
 #playerAlbumCoverContainer:hover {
@@ -67,22 +72,26 @@ li.songInList:hover {
     opacity: 1;
 }
 
+li.songInListPlayed {
+    opacity: 1;
+    font-weight: 800;
+    list-style-image: url('play.svg');
+}
+
 audio {
-    box-sizing: content-box;
-    background-color: #555;
+    margin-left: -12px;
     width: 100%;
-    border: 3px solid #000;
 }
 
 #sideButtonsContainer{
     margin-top: 50px;
     font-size: 1.8em;
 }
-#sideButtonsContainer>.delete:hover {
+#sideButtonsContainer>.deletePlayer:hover {
     color: #dc3545;
 }
 
-#sideButtonsContainer>.edit:hover {
+#sideButtonsContainer>.editPlayer:hover {
     color: #007bff;
 }
 #closePlayer:hover {
@@ -143,7 +152,7 @@ audio {
 
 .playButton {
     font-size: 2.4em;
-    margin-top: 12px;
+    margin-top: 10px;
     -webkit-transition: all 0.7s ease-in-out;
     transition: all 0.7s ease-in-out;
 }
