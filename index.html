@@ -11,7 +11,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
     <!--Font Awesome-->
-    <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/all.js" integrity="sha384-xymdQtn1n3lH2wcu0qhcdaOpQwyoarkgLVxC/wZ5q7h9gHtxICrpcaSUfygqZGOe" crossorigin="anonymous"></script>
+    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous"> -->
     <!--GOOGLE FONTS-->
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -39,10 +40,10 @@
             <div class="player" id="musicPlayer">
                 <div id="playerAlbumCoverContainer">
                     <div id="playerPlayButton" class="playButton"><i id="centerButton" class="fas fa-play"></i></div>
-                    <img id="playerAlbumCover" src="https://www.billboard.com/files/styles/900_wide/public/media/best-edm-songs-50-axwell-center-of-the-universe-billboard-600x600.jpg" alt="Album Cover">
+                    <img id="playerAlbumCover">
                 </div>
                 <div class="playerController">
-                    <audio id="audioTag" controls src="">
+                    <audio id="audioTag" controls="controls" src="">
                         <source id="audioFile" src="" type="audio/mpeg">
                     </audio>
                     <div id="songListsTitle"></div>
@@ -51,8 +52,8 @@
             </div>
             <div id="sideButtonsContainer">
                 <div id="closePlayer" name="Close Player"><i class="fas fa-times"></i></div>
-                <div class="delete" data-id=""><i class="fas fa-trash"></i></div>
-                <div class="edit" data-id="}"><i class="fas fa-pencil-alt"></i></div>
+                <div class="deletePlayer" id=""><i class="fas fa-trash"></i></div>
+                <div class="editPlayer" id=""><i class="fas fa-pencil-alt"></i></div>
             </div>
         </div>
         <!-- Playlists Container -->
@@ -67,30 +68,31 @@
                     <form id="formplaylist" data-id="">
                         <div id="addPlaylistStepOne">
                             <div class="modal-header">
-                                <span class="modal-title" ><h5 id="modalTitle">Add new playlist</h5> ()</span>
+                                <span class="modal-title" ><h5 id="modalTitle">Add new playlist</h5> </span>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <img src="#" class="rounded float-right playlistCoverImg" alt="please add cover image">
+                                    <img id="PlaylistCoverPreview" src="#" class="rounded float-right playlistCoverImg" alt="please add cover image">
                                     <label>Playlist Name:
                                     <input type="text" id="PlaylistNameInput" class="form-control" placeholder="e.g. Lorem Ipsum"></label>
                                     <label>Image URL:
                                     <input type="text" id="PlaylistURLInput" class="form-control" placeholder="http://..."></label>
-                                    <span id="PlaylistHelp" class="form-text text-danger"></span>
+                                    <span id="PlaylistHelp" class="form-text text-danger">  </span>
                                 </div>
                             </div>
                                 <div class="modal-footer">
                                 <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
                                 <button type="reset" class="btn btn-outline-primary">Reset Fields</button>
                                 <button id="playlistFormNextBtn" type="button" class="btn btn-outline-success">Next</button>
+                                <button id="playlistFormEditNextBtn" type="button" class="btn btn-outline-success">Update</button>
                             </div>
                         </div>
                         <div id="addPlaylistStepTwo">
                             <div class="modal-header">
-                                <span class="modal-title"><h5>Add Playlist Songs</h5> (Min 1 song, up to 12 songs)</span>
+                                <span class="modal-title"><h5>Add songs to playlist</h5> (Min 1 song, up to 12 songs)</span>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                                 </button>
@@ -108,7 +110,7 @@
                                 <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
                                 <button id="playlistFormBackBtn" type="button" class="btn btn-outline-primary">Back</button>
                                 <button id="playlistFormSaveBtn" type="button" class="btn btn-outline-success" data-dismiss="modal">Save &amp; Finish</button>
-                                <button id="playlistFormEditSaveBtn" type="button" class="btn btn-outline-success" data-dismiss="modal">Save &amp; Finish</button>
+                                <button id="playlistFormEditSaveBtn" type="button" class="btn btn-outline-success" data-dismiss="modal">Update &amp; Finish</button>
                             </div>
                         </div>
                     </form>
